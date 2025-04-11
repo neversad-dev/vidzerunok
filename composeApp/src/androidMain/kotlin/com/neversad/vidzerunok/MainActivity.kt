@@ -10,6 +10,9 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        // Initialize FileKit
+//        FileKit.init(activityResultRegistry)
+
         setContent {
             App()
         }
