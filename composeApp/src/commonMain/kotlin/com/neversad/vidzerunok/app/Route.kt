@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 sealed interface Route {
 
     @Serializable
-    data object EditorGraph: Route
+    data object MainGraph: Route
 
     @Serializable
     data object FilePicker: Route

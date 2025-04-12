@@ -4,8 +4,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.layout.statusBarsPadding
-import androidx.compose.material3.Button
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -19,10 +17,9 @@ import io.github.vinceglb.filekit.name
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
-fun ImageEditorScreen (
+fun ImageEditorScreen(
     viewModel: EditorViewModel = koinViewModel(),
-    onNavigateBack: () -> Unit
-){
+) {
 
     val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -32,11 +29,8 @@ fun ImageEditorScreen (
             .statusBarsPadding(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Button(onClick = onNavigateBack){
-            Text("Back")
-        }
 
-        val file    = state.file.toPlatformFile()
+        val file = state.file.toPlatformFile()
 
         AsyncImage(
             file,
