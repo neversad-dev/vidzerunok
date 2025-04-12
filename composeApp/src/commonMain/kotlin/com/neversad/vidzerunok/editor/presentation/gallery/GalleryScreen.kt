@@ -5,8 +5,6 @@ import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.material3.Button
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -22,7 +20,6 @@ import org.koin.compose.viewmodel.koinViewModel
 @Composable
 fun GalleryScreen (
     viewModel: GalleryViewModel = koinViewModel(),
-    onRequestAddFile: () -> Unit,
     onImageSelected: (String) -> Unit
 ){
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -33,10 +30,6 @@ fun GalleryScreen (
             when (action) {
                 is GalleryAction.OnImageSelected -> {
                     onImageSelected(action.file)
-                }
-
-                GalleryAction.OnRequestAddFile -> {
-                    onRequestAddFile()
                 }
             }
         }
@@ -50,15 +43,6 @@ fun GalleryScreen(
 ){
 
     LazyVerticalGrid(columns = GridCells.Adaptive(800.dp) ){
-        item{
-            Button(
-                onClick = {
-                    onAction(GalleryAction.OnRequestAddFile)
-                }
-            ) {
-                Text("Add File")
-            }
-        }
         items(state.files) {
             val file    = it.toPlatformFile()
 
