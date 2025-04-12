@@ -9,6 +9,7 @@ import com.neversad.vidzerunok.editor.domain.ImageRepository
 import io.github.vinceglb.filekit.FileKit
 import io.github.vinceglb.filekit.copyTo
 import io.github.vinceglb.filekit.createDirectories
+import io.github.vinceglb.filekit.delete
 import io.github.vinceglb.filekit.div
 import io.github.vinceglb.filekit.exists
 import io.github.vinceglb.filekit.extension
@@ -46,5 +47,16 @@ class InternalMemoryImageRepository(
 
         return destinationFolder.list()
             .map { it.path }
+    }
+
+    override suspend fun deleteImage(file: String): EmptyResult<Error.Local> {
+        val destinationFile = file.toPlatformFile()
+
+        return try {
+            destinationFile.delete()
+            Result.Success(Unit)
+        } catch (e: Exception) {
+            Result.Error(Error.Local.UNKNOWN)
+        }
     }
 }
