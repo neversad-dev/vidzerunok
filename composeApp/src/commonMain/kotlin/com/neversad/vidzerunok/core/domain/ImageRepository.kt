@@ -1,7 +1,7 @@
-package com.neversad.vidzerunok.editor.domain
+package com.neversad.vidzerunok.core.domain
 
-import com.neversad.vidzerunok.core.domain.EmptyResult
-import com.neversad.vidzerunok.core.domain.Error
+import com.neversad.vidzerunok.core.common.EmptyResult
+import com.neversad.vidzerunok.core.common.Error
 
 interface ImageRepository {
     suspend fun saveFile(path: String): EmptyResult<Error.Local>

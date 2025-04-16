@@ -1,9 +1,8 @@
-package com.neversad.vidzerunok.editor.domain
+package com.neversad.vidzerunok.core.domain
 
 import kotlinx.datetime.Clock
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
-
 
 object GetTimestampUseCase {
 
