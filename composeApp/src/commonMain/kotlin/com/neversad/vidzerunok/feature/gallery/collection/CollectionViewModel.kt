@@ -9,6 +9,8 @@ import com.neversad.vidzerunok.core.presentation.toUiText
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -18,7 +20,7 @@ class CollectionViewModel(
     val imageRepository: ImageRepository
 ) : ViewModel() {
 
-    private var observeGalleryJob: Job? = null
+    private var observeFilesJob: Job? = null
 
     private val _state = MutableStateFlow(CollectionState())
     val state = _state
@@ -47,30 +49,45 @@ class CollectionViewModel(
                         }
                 }
             }
+
             is CollectionAction.OnOpenFilePickerDialog -> {
-                _state.update { it.copy(
-                    isFilePickerDialogActive = true
-                ) }
+                _state.update {
+                    it.copy(
+                        isFilePickerDialogActive = true
+                    )
+                }
             }
+
             is CollectionAction.OnFilePickerCanceled -> {
-                _state.update { it.copy(
-                    isFilePickerDialogActive = false
-                ) }
+                _state.update {
+                    it.copy(
+                        isFilePickerDialogActive = false
+                    )
+                }
             }
+
             is CollectionAction.OnFileSelected -> {
-                _state.update { it.copy(
-                    isFilePickerDialogActive = false
-                ) }
+                _state.update {
+                    it.copy(
+                        isFilePickerDialogActive = false
+                    )
+                }
             }
+
             is CollectionAction.OnEditModeClick -> {
-                _state.update { it.copy(
-                    isEditMode = true
-                ) }
+                _state.update {
+                    it.copy(
+                        isEditMode = true
+                    )
+                }
             }
+
             is CollectionAction.OnEditModeDismiss -> {
-                _state.update { it.copy(
-                    isEditMode = false
-                ) }
+                _state.update {
+                    it.copy(
+                        isEditMode = false
+                    )
+                }
             }
 
             else -> Unit
@@ -78,15 +95,17 @@ class CollectionViewModel(
     }
 
     private fun observeGallery() {
-        observeGalleryJob?.cancel()
-        observeGalleryJob = viewModelScope.launch {
-            val files = imageRepository.getAllFiles()
-            _state.update {
-                it.copy(
-                    files = files
-                )
+        observeFilesJob?.cancel()
+        observeFilesJob = imageRepository
+            .getAllFiles()
+            .onEach { files ->
+                _state.update {
+                    it.copy(
+                        files = files
+                    )
+                }
             }
-        }
+            .launchIn(viewModelScope)
 
     }
 
