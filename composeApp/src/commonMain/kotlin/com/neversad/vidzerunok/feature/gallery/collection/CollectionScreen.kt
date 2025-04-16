@@ -118,13 +118,15 @@ fun CollectionScreen(
             }
         ) },
         floatingActionButton = {
-            FloatingActionButton(
-                onClick = { onAction(CollectionAction.OnOpenFilePickerDialog)},
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Add,
-                    contentDescription = "Add image"
-                )
+            if(!state.isEditMode) {
+                FloatingActionButton(
+                    onClick = { onAction(CollectionAction.OnOpenFilePickerDialog) },
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Add,
+                        contentDescription = "Add image"
+                    )
+                }
             }
         }
     ) { paddingValues ->
