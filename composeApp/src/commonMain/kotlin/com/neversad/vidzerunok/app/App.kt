@@ -47,7 +47,9 @@ fun App() {
                         containerColor = MaterialTheme.colorScheme.primaryContainer,
                         titleContentColor = MaterialTheme.colorScheme.primary,
                     ),
-                    title = { Text("Vidzerunok") },
+                    title = { Text(
+                        "Title"
+                    ) },
                     navigationIcon = {
 
                         if (canNavigateBack) {

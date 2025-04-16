@@ -1,6 +1,3 @@
-rootProject.name = "vidzerunok"
-enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
-
 pluginManagement {
     repositories {
         google {
@@ -26,8 +23,12 @@ dependencyResolutionManagement {
         }
         mavenCentral()
     }
+    versionCatalogs {
+        create("libs") {
+            from(files("../gradle/libs.versions.toml"))
+        }
+    }
 }
 
-includeBuild("build-logic")
-
-include(":composeApp")
+rootProject.name = "build-logic"
+include(":convention")
