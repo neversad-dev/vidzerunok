@@ -1,43 +1,33 @@
-package com.neversad.vidzerunok.editor.presentation.file_picker
+package com.neversad.vidzerunok.feature.gallery.file_picker
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.neversad.vidzerunok.core.domain.onError
-import com.neversad.vidzerunok.core.domain.onSuccess
+import androidx.navigation.toRoute
+import com.neversad.vidzerunok.core.common.onError
+import com.neversad.vidzerunok.core.common.onSuccess
+import com.neversad.vidzerunok.core.domain.ImageRepository
 import com.neversad.vidzerunok.core.presentation.toUiText
-import com.neversad.vidzerunok.editor.domain.ImageRepository
+import com.neversad.vidzerunok.feature.gallery.navigation.FilePickerScreen
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class FilePickerViewModel (
-    private val imageRepository: ImageRepository
+    private val imageRepository: ImageRepository,
+    savedStateHandle: SavedStateHandle
 ): ViewModel(){
 
-    private val _state = MutableStateFlow(FilePickerState())
+    private val filePath = savedStateHandle.toRoute<FilePickerScreen>().path
+
+    private val _state = MutableStateFlow(FilePickerState(
+        filePath = filePath,
+    ))
     val state = _state.asStateFlow()
 
     fun onAction(action: FilePickerAction) {
         when(action) {
-            FilePickerAction.OnOpenFilePickerDialog -> {
-               _state.update {
-                   it.copy(isFilePickerDialogActive = true)
-               }
-            }
-            FilePickerAction.OnFilePickerCanceled -> {
-                _state.update { it.copy(
-                        isFilePickerDialogActive = false
-                    ) }
-            }
-            is FilePickerAction.OnFileSelected -> {
-                _state.update {
-                    it.copy(
-                        isFilePickerDialogActive = false,
-                        filePath = action.path
-                    )
-                }
-            }
             is FilePickerAction.OnClearSelection -> {
                 _state.update {
                     it.copy(

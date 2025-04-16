@@ -1,6 +1,6 @@
 package com.neversad.vidzerunok.core.presentation
 
-import com.neversad.vidzerunok.core.domain.Error
+import com.neversad.vidzerunok.core.common.Error
 import vidzerunok.composeapp.generated.resources.Res
 import vidzerunok.composeapp.generated.resources.error_unknown
 

@@ -1,6 +1,7 @@
-package com.neversad.vidzerunok.editor.domain
+package com.neversad.vidzerunok.core.domain
 
-private const val PREFIX = "vidzerunok"
+
+private const val PREFIX = "vidz"
 
 class GenerateFileNameUseCase(
     private val getTimeStampUseCase: GetTimestampUseCase

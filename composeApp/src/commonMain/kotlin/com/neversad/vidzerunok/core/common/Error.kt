@@ -1,4 +1,4 @@
-package com.neversad.vidzerunok.core.domain
+package com.neversad.vidzerunok.core.common
 
 sealed interface Error {
 

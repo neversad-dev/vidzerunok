@@ -1,4 +1,4 @@
-package com.neversad.vidzerunok.editor.presentation.file_picker
+package com.neversad.vidzerunok.feature.gallery.file_picker
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -20,23 +20,19 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.neversad.vidzerunok.core.data.toPlatformFile
 import io.github.vinceglb.filekit.coil.AsyncImage
-import io.github.vinceglb.filekit.dialogs.FileKitMode
-import io.github.vinceglb.filekit.dialogs.FileKitType
-import io.github.vinceglb.filekit.dialogs.compose.rememberFilePickerLauncher
 import io.github.vinceglb.filekit.name
-import io.github.vinceglb.filekit.path
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun FilePickerScreen(
     viewModel: FilePickerViewModel = koinViewModel(),
-    onFileSelected: () -> Unit
+    onNavigateBack: () -> Unit
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
-    LaunchedEffect(state.isFileImported){
-        if (state.isFileImported) {
-            onFileSelected()
+    LaunchedEffect(state.isFileImported, state.filePath){
+        if (state.isFileImported || state.filePath == null) {
+            onNavigateBack()
         }
     }
 
@@ -57,24 +53,6 @@ fun FilePickerScreen (
     onAction: (FilePickerAction) -> Unit
 ) {
 
-    val filePickerDialog = rememberFilePickerLauncher(
-        mode = FileKitMode.Single,
-        type = FileKitType.ImageAndVideo
-    ) { file ->
-        if(file != null) {
-            println(file.path)
-            println(file.toString())
-            onAction(FilePickerAction.OnFileSelected(file.path))
-        } else {
-            onAction(FilePickerAction.OnFilePickerCanceled)
-        }
-    }
-
-    LaunchedEffect(state.isFilePickerDialogActive){
-        if (state.isFilePickerDialogActive) {
-            filePickerDialog.launch()
-        }
-    }
 
     Column(
         modifier = Modifier
@@ -85,13 +63,6 @@ fun FilePickerScreen (
         if (state.isLoading) {
             CircularProgressIndicator()
         } else {
-            Button(
-                onClick = {
-                    onAction(FilePickerAction.OnOpenFilePickerDialog)
-                }
-            ) {
-                Text("Pick a file")
-            }
 
             if (state.errorMessage != null) {
                 Row(
