@@ -6,6 +6,7 @@ import com.neversad.vidzerunok.core.common.Result
 import com.neversad.vidzerunok.core.domain.GenerateFileNameUseCase
 import com.neversad.vidzerunok.core.domain.ImageRepository
 import io.github.vinceglb.filekit.FileKit
+import io.github.vinceglb.filekit.PlatformFile
 import io.github.vinceglb.filekit.copyTo
 import io.github.vinceglb.filekit.createDirectories
 import io.github.vinceglb.filekit.delete
@@ -29,7 +30,6 @@ class InternalMemoryImageRepository(
     private val updateEvent = MutableSharedFlow<Unit>(replay = 0)
 
     override suspend fun saveFile(path: String): EmptyResult<Error.Local> {
-
 
         return try {
             val sourceFile = path.toPlatformFile()
@@ -60,7 +60,7 @@ class InternalMemoryImageRepository(
     }
 
     override suspend fun deleteImage(file: String): EmptyResult<Error.Local> {
-        val destinationFile = file.toPlatformFile()
+        val destinationFile = PlatformFile(file)
 
         return try {
             destinationFile.delete()
