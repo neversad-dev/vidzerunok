@@ -29,12 +29,16 @@ class MainImageRepository(
         }
     }
 
-    override fun getAllFiles(): Flow<List<String>> {
+    override fun getAllFiles(): Flow<Result<List<String>, VidzError>> {
 
         return updateEvent
             .onStart { emit(Unit) }
             .map {
-                imageDataSource.getImages()
+                try{
+                   Result.Success(imageDataSource.getImages())
+                } catch(e: Exception) {
+                   Result.Error(VidzError.UNKNOWN)
+                }
             }
     }
 
