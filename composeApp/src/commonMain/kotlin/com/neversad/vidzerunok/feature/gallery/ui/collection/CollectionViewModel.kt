@@ -4,8 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.neversad.vidzerunok.core.domain.onError
 import com.neversad.vidzerunok.core.domain.onSuccess
-import com.neversad.vidzerunok.feature.gallery.domain.ImageRepository
 import com.neversad.vidzerunok.core.presentation.toUiText
+import com.neversad.vidzerunok.feature.gallery.domain.ImageRepository
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -98,12 +98,22 @@ class CollectionViewModel(
         observeFilesJob?.cancel()
         observeFilesJob = imageRepository
             .getAllFiles()
-            .onEach { files ->
-                _state.update {
-                    it.copy(
-                        files = files
-                    )
+            .onEach { filesResult ->
+                filesResult.onSuccess { files ->
+                    _state.update {
+                        it.copy(
+                            files = files
+                        )
+                    }
                 }
+                    .onError {
+                        _state.update {
+                            it.copy(
+                                errorMessage = it.errorMessage
+                            )
+                        }
+                    }
+
             }
             .launchIn(viewModelScope)
 
