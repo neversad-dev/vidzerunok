@@ -1,94 +1,51 @@
 package com.neversad.vidzerunok.feature.editor.ui.components
 
 
-import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.gestures.detectTapGestures
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.layout.ContentScale
+import com.neversad.vidzerunok.feature.editor.ui.DragMode
+import com.neversad.vidzerunok.feature.editor.ui.Shape
+import io.github.vinceglb.filekit.PlatformFile
+import io.github.vinceglb.filekit.coil.AsyncImage
 
 private const val stroke_width = 10f
 private const val touchable_width = 20f
 private const val control_point_radius = 10f
 private const val control_point_stroke = 1f
 
-data class Rect(
-    val id: Long = 0,
-    val x: Float = 50f,
-    val y: Float = 50f,
-    val width: Float = 200f,
-    val height: Float = 300f,
-) {
 
-    val topLeft: Offset get() = Offset(x, y)
-
-    val topRight: Offset get() = Offset(x + width, y)
-
-    val bottomLeft: Offset get() = Offset(x, y + height)
-
-    val bottomRight: Offset get() = Offset(x + width, y + height)
-
-    val top: Offset get() = Offset(x + width / 2, y)
-
-    val bottom: Offset get() = Offset(x + width / 2, y + height)
-
-    val left: Offset get() = Offset(x, y + height / 2)
-
-    val right: Offset get() = Offset(x + width, y + height / 2)
-
-    val controlPoints: List<Offset> = listOf(
-        topLeft,
-        top,
-        topRight,
-        left,
-        bottomRight,
-        bottom,
-        bottomLeft,
-        right
-    )
-
-
-}
-
-enum class DragMode {
-    NONE,
-    DRAG,
-    RESIZE_TOP_LEFT,
-    RESIZE_TOP,
-    RESIZE_TOP_RIGHT,
-    RESIZE_RIGHT,
-    RESIZE_BOTTOM_RIGHT,
-    RESIZE_BOTTOM,
-    RESIZE_BOTTOM_LEFT,
-    RESIZE_LEFT,
-}
 
 @Composable
-fun RectangleElement(
+fun CanvasView(
     modifier: Modifier = Modifier,
-    shapes: List<Rect>,
-    activeShape: Rect? = null,
-    onChangeSelection: (Rect?) -> Unit,
+    filePath: String,
+    shapes: List<Shape>,
+    activeShape: Shape? = null,
+    onChangeSelection: (Shape?) -> Unit,
     onDrag: (DragMode, Float, Float) -> Unit
 ) {
 
     var dragMode by remember { mutableStateOf(DragMode.NONE) }
     var dragFinished by remember { mutableStateOf(false) }
 
-    Box(
+    AsyncImage(
+        file = PlatformFile(filePath),
+        contentDescription = null,
+        contentScale = ContentScale.Fit,
         modifier = modifier
-            .fillMaxSize()
             .pointerInput(shapes) {
                 detectTapGestures { offset ->
                     val selected = shapes.lastOrNull {
@@ -163,45 +120,41 @@ fun RectangleElement(
                         dragMode = DragMode.NONE }
                 )
             }
-
-    ) {
-        Canvas(
-            modifier = Modifier
-                .matchParentSize()
-        ) {
-            shapes.forEach {
-                drawRect(
-                    color = Color.Red,
-                    topLeft = Offset(it.x, it.y),
-                    size = Size(it.width, it.height),
-                    style = Stroke(width = stroke_width)
-                )
-            }
-
-            activeShape?.let {
-                drawRect(
-                    color = Color.Red,
-                    topLeft = Offset(it.x, it.y),
-                    size = Size(it.width, it.height),
-                    style = Stroke(width = stroke_width)
-                )
-
-
-                it.controlPoints.forEach { offset ->
-                    // Draw black outline
-                    drawCircle(
-                        color = Color.Black,
-                        radius = control_point_radius + control_point_stroke * 2,
-                        center = offset
+            .drawWithContent {
+                drawContent()
+                shapes.forEach {
+                    drawRect(
+                        color = Color.Red,
+                        topLeft = Offset(it.x, it.y),
+                        size = Size(it.width, it.height),
+                        style = Stroke(width = stroke_width)
                     )
-                    drawCircle(
-                        color = Color.White,
-                        radius = control_point_radius,
-                        center = offset
+                }
+
+                activeShape?.let {
+                    drawRect(
+                        color = Color.Red,
+                        topLeft = Offset(it.x, it.y),
+                        size = Size(it.width, it.height),
+                        style = Stroke(width = stroke_width)
                     )
+
+
+                    it.controlPoints.forEach { offset ->
+                        // Draw black outline
+                        drawCircle(
+                            color = Color.Black,
+                            radius = control_point_radius + control_point_stroke * 2,
+                            center = offset
+                        )
+                        drawCircle(
+                            color = Color.White,
+                            radius = control_point_radius,
+                            center = offset
+                        )
+                    }
                 }
             }
 
-        }
-    }
+    )
 }

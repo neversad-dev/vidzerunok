@@ -4,7 +4,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
-import com.neversad.vidzerunok.feature.editor.ui.ImageEditorScreen
+import com.neversad.vidzerunok.feature.editor.ui.EditorScreen
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -19,7 +19,7 @@ fun NavGraphBuilder.editorGraph(
     navController: NavController,
 ) {
     composable<Editor> {
-        ImageEditorScreen(
+        EditorScreen(
             onBackClicked = {
                 navController.popBackStack()
             }
