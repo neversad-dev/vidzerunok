@@ -1,14 +1,15 @@
 package com.neversad.vidzerunok.feature.editor.ui
 
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Color
+import com.neversad.vidzerunok.feature.editor.ui.components.DragMode
+import com.neversad.vidzerunok.feature.editor.ui.components.Rect
 
 sealed interface EditorAction {
     data object OnBackClick : EditorAction
-    data object OnNewPathStart : EditorAction
-    data class OnDraw(val offset: Offset) : EditorAction
-    data object OnPathEnd : EditorAction
-    data class OnSelectColor(val color: Color) : EditorAction
+    data object OnRectangleControlClick : EditorAction
+    data class OnShapeSelected(val rect: Rect): EditorAction
+    class OnShapeDrag(val mode: DragMode, val x: Float, val y: Float) : EditorAction
+
+    data object OnCancelSelection: EditorAction
     data object ClearCanvasClick : EditorAction
 
 }

@@ -1,10 +1,10 @@
 package com.neversad.vidzerunok.feature.editor.ui
 
-import androidx.compose.foundation.gestures.detectDragGestures
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -14,25 +14,24 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.drawWithContent
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Path
-import androidx.compose.ui.graphics.StrokeCap
-import androidx.compose.ui.graphics.StrokeJoin
-import androidx.compose.ui.graphics.drawscope.DrawScope
-import androidx.compose.ui.graphics.drawscope.Stroke
-import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.neversad.vidzerunok.core.presentation.ui.VidzerunokTopBar
+import com.neversad.vidzerunok.feature.editor.ui.components.CanvasControls
+import com.neversad.vidzerunok.feature.editor.ui.components.DragMode
+import com.neversad.vidzerunok.feature.editor.ui.components.Rect
+import com.neversad.vidzerunok.feature.editor.ui.components.RectangleElement
 import io.github.vinceglb.filekit.PlatformFile
 import io.github.vinceglb.filekit.coil.AsyncImage
 import io.github.vinceglb.filekit.name
+import kotlinx.datetime.Clock
 import org.koin.compose.viewmodel.koinViewModel
-import kotlin.math.abs
+import kotlin.random.Random
 
 @Composable
 fun ImageEditorScreen(
@@ -42,13 +41,120 @@ fun ImageEditorScreen(
 
     val state by viewModel.state.collectAsStateWithLifecycle()
 
+    val shapes by remember { mutableStateOf(mutableListOf<Rect>()) }
+    var activeShape by remember { mutableStateOf<Rect?>(null) }
+
     ImageEditorScreen(
         state = state,
+        shapes = shapes,
+        activeShape = activeShape,
         onAction = { action ->
             when (action) {
                 is EditorAction.OnBackClick -> {
                     onBackClicked()
                 }
+
+                is EditorAction.OnRectangleControlClick -> {
+                    activeShape?.let { shapes.add(it) }
+
+                    val randomX = Random.nextFloat() * 50f
+                    val randomY = Random.nextFloat() * 50f
+                    activeShape =
+                        Rect(
+                            Clock.System.now().epochSeconds,
+                            randomX,
+                            randomY,
+                            200f + randomX,
+                            300f + randomY
+                        )
+                }
+
+                is EditorAction.OnShapeSelected -> {
+                    activeShape?.let { shapes.add(it) }
+                    shapes.remove(action.rect)
+                    activeShape = action.rect
+                }
+
+                is EditorAction.OnCancelSelection -> {
+                    activeShape?.let { shapes.add(it) }
+                    activeShape = null
+                }
+
+                is EditorAction.ClearCanvasClick -> {
+                    shapes.clear()
+                    activeShape = null
+                }
+                is EditorAction.OnShapeDrag -> {
+
+                    activeShape?.let {
+                        when (action.mode) {
+                            DragMode.NONE -> Unit
+                            DragMode.DRAG -> {
+                                activeShape = it.copy(
+                                    x = it.x +action.x,
+                                    y = it.y +action.y
+                                )
+                            }
+
+                            DragMode.RESIZE_TOP_LEFT -> {
+                                activeShape = it.copy(
+                                    x = it.x + action.x,
+                                    y = it.y + action.y,
+                                    width = it.width - action.x,
+                                    height = it.height - action.y
+                                )
+                            }
+
+                            DragMode.RESIZE_TOP -> {
+                                activeShape = it.copy(
+                                    y = it.y + action.y,
+                                    height = it.height - action.y
+                                )
+                            }
+
+                            DragMode.RESIZE_TOP_RIGHT -> {
+                                activeShape = it.copy(
+                                    y = it.y + action.y,
+                                    width = it.width + action.x,
+                                    height = it.height - action.y
+                                )
+                            }
+
+                            DragMode.RESIZE_RIGHT -> {
+                                activeShape = it.copy(
+                                    width = it.width + action.x
+                                )
+                            }
+
+                            DragMode.RESIZE_BOTTOM_RIGHT -> {
+                                activeShape = it.copy(
+                                    width = it.width + action.x,
+                                    height = it.height + action.y
+                                )
+                            }
+
+                            DragMode.RESIZE_BOTTOM -> {
+                                activeShape = it.copy(
+                                    height = it.height + action.y
+                                )
+                            }
+
+                            DragMode.RESIZE_BOTTOM_LEFT -> {
+                                activeShape = it.copy(
+                                    x = it.x + action.x,
+                                    width = it.width - action.x,
+                                    height = it.height + action.y
+                                )
+                            }
+
+                            DragMode.RESIZE_LEFT -> {
+                                activeShape = it.copy(
+                                    x = it.x + action.x,
+                                    width = it.width - action.x
+                                )
+                            }
+                        }
+                    }                }
 
                 else -> Unit
             }
@@ -61,6 +167,8 @@ fun ImageEditorScreen(
 @Composable
 fun ImageEditorScreen(
     state: EditorState,
+    shapes: MutableList<Rect>,
+    activeShape: Rect? = null,
     onAction: (EditorAction) -> Unit,
 ) {
     Scaffold(
@@ -83,21 +191,20 @@ fun ImageEditorScreen(
         Column(
             modifier = Modifier.fillMaxSize()
                 .padding(paddingValues),
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
 
             EditorCanvas(
                 modifier = Modifier.weight(1f),
+                shapes = shapes,
+                activeShape = activeShape,
                 filePath = state.file,
                 onAction = onAction,
-                paths = state.paths,
-                currentPath = state.currentPath
             )
 
             CanvasControls(
-                selectedColor = state.selectedColor,
-                colors = allColors,
-                onSelectedColor = {
-                    onAction(EditorAction.OnSelectColor(it))
+                onRectangleClick = {
+                    onAction(EditorAction.OnRectangleControlClick)
                 },
                 onClearCanvas = {
                     onAction(EditorAction.ClearCanvasClick)
@@ -112,87 +219,36 @@ fun ImageEditorScreen(
 fun EditorCanvas(
     modifier: Modifier = Modifier,
     filePath: String,
+    shapes: List<Rect> = emptyList(),
+    activeShape: Rect? = null,
     onAction: (EditorAction) -> Unit = {},
-
-    paths: List<PathData> = emptyList(),
-    currentPath: PathData? = null,
 ) {
 
     val file = PlatformFile(filePath)
 
-    AsyncImage(
-        file = file,
-        contentDescription = file.name,
-        contentScale = ContentScale.Fit,
-        modifier = modifier
-            .sizeIn(maxWidth = 400.dp)
-            .pointerInput(true) {
-                detectDragGestures(
-                    onDragStart = {
-                        onAction(EditorAction.OnNewPathStart)
-                    },
-                    onDragEnd = {
-                        onAction(EditorAction.OnPathEnd)
-                    },
-                    onDrag = { change, _ ->
-                        onAction(EditorAction.OnDraw(change.position))
-                    },
-                    onDragCancel = {
-                        onAction(EditorAction.OnPathEnd)
-                    }
-                )
-            }
-            .drawWithContent {
-                drawContent()
-                paths.forEach { pathData ->
-                    drawPath(
-                        path = pathData.path,
-                        color = pathData.color,
-                    )
-                }
-                currentPath?.let { pathData ->
-                    drawPath(
-                        path = pathData.path,
-                        color = pathData.color,
-                    )
-                }
-            }
-    )
-}
-
-private fun DrawScope.drawPath(
-    path: List<Offset>,
-    color: Color,
-    thickness: Float = 10f
-) {
-    val smoothedPath = Path().apply {
-        if (path.isNotEmpty()) {
-            moveTo(path.first().x, path.first().y)
-
-            val smoothness = 5
-            for (i in 1..path.lastIndex) {
-                val from = path[i - 1]
-                val to = path[i]
-                val dx = abs(from.x - to.x)
-                val dy = abs(from.y - to.y)
-                if (dx >= smoothness || dy >= smoothness) {
-                    quadraticTo(
-                        x1 = (from.x + to.x) / 2,
-                        y1 = (from.y + to.y) / 2,
-                        x2 = to.x,
-                        y2 = to.y
-                    )
-                }
-            }
-        }
-    }
-    drawPath(
-        path = smoothedPath,
-        color = color,
-        style = Stroke(
-            width = thickness,
-            cap = StrokeCap.Round,
-            join = StrokeJoin.Round
+    Box(
+        modifier = modifier,
+    ) {
+        AsyncImage(
+            modifier = Modifier.fillMaxWidth(),
+            file = file,
+            contentDescription = file.name,
+            contentScale = ContentScale.Fit,
         )
-    )
+        RectangleElement(
+            shapes = shapes,
+            activeShape = activeShape,
+            onChangeSelection = {
+                if (it == null) {
+                    onAction(EditorAction.OnCancelSelection)
+                } else {
+                    onAction(EditorAction.OnShapeSelected(it))
+                }
+            },
+            onDrag = { mode, x, y ->
+                onAction(EditorAction.OnShapeDrag(mode, x, y))
+            }
+        )
+    }
+
 }
