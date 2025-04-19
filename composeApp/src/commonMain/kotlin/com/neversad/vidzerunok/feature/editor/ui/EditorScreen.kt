@@ -77,7 +77,6 @@ fun EditorScreen(
                 modifier = Modifier.fillMaxWidth(),
                 filePath = state.file,
                 shapes = state.shapes,
-                activeShape = state.activeShape,
                 onChangeSelection = {
                     if (it == null) {
                         onAction(EditorAction.OnCancelSelection)
@@ -93,6 +92,12 @@ fun EditorScreen(
             CanvasControls(
                 onRectangleClick = {
                     onAction(EditorAction.OnRectangleControlClick)
+                },
+                onCircleClick = {
+                    onAction(EditorAction.OnCircleControlClick)
+                },
+                onArrowClick = {
+                    onAction(EditorAction.OnArrowControlClick)
                 },
                 onClearCanvas = {
                     onAction(EditorAction.ClearCanvasClick)

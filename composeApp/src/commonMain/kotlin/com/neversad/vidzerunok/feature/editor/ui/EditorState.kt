@@ -1,9 +1,9 @@
 package com.neversad.vidzerunok.feature.editor.ui
 
+import com.neversad.vidzerunok.feature.editor.ui.shapes.ShapeState
 
 
 data class EditorState(
     val file: String,
-    val shapes: List<Shape> = emptyList(),
-    val activeShape: Shape? = null
+    val shapes: List<ShapeState> = emptyList(),
 )

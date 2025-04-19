@@ -21,6 +21,8 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun ColumnScope.CanvasControls(
     onRectangleClick: () -> Unit,
+    onCircleClick: () -> Unit,
+    onArrowClick: () -> Unit,
     onClearCanvas: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -41,6 +43,32 @@ fun ColumnScope.CanvasControls(
                 }
                 .drawBehind {
                     drawRect(
+                        color = Color.Black,
+                        style = Stroke(width = 5f)
+                    )
+                }
+        )
+        Box(
+            modifier = Modifier
+                .size(40.dp)
+                .clickable {
+                    onCircleClick()
+                }
+                .drawBehind {
+                    drawCircle(
+                        color = Color.Black,
+                        style = Stroke(width = 5f)
+                    )
+                }
+        )
+        Box(
+            modifier = Modifier
+                .size(40.dp)
+                .clickable {
+                    onArrowClick()
+                }
+                .drawBehind {
+                    drawCircle(
                         color = Color.Black,
                         style = Stroke(width = 5f)
                     )
