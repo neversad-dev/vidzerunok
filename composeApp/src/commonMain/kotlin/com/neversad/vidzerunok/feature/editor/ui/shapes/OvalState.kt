@@ -11,7 +11,7 @@ private const val stroke_width = 10f
 private const val touchable_width = 20f
 
 data class OvalState(
-    override val id: Long = Clock.System.now().epochSeconds,
+    override val id: Long = Clock.System.now().toEpochMilliseconds(),
     override val isActive: Boolean = true,
     override val x: Float = 50f,
     override val y: Float = 50f,

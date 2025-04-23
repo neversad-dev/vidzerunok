@@ -22,7 +22,7 @@ private const val control_point_stroke = 1f
 private const val outline_width = 4f  // Width of the black outline
 
 data class ArrowState(
-    override val id: Long = Clock.System.now().epochSeconds,
+    override val id: Long = Clock.System.now().toEpochMilliseconds(),
     override val isActive: Boolean = true,
     val startX: Float = 100f,
     val startY: Float = 100f,
