@@ -14,7 +14,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.unit.dp
 
@@ -68,10 +70,27 @@ fun ColumnScope.CanvasControls(
                     onArrowClick()
                 }
                 .drawBehind {
-                    drawCircle(
-                        color = Color.Black,
-                        style = Stroke(width = 5f)
-                    )
+
+                        // Draw the arrow shaft
+                        drawLine(
+                            color = Color.Black,
+                            start = Offset(size.width * 0.2f, size.height * 0.5f),
+                            end = Offset(size.width * 0.8f, size.height * 0.5f),
+                            strokeWidth = 5f
+                        )
+
+                        // Draw the arrowhead
+                        val arrowHeadPath = Path().apply {
+                            moveTo(size.width * 0.8f, size.height * 0.5f) // Tip of the arrow
+                            lineTo(size.width * 0.7f, size.height * 0.4f) // Top of the arrowhead
+                            lineTo(size.width * 0.7f, size.height * 0.6f) // Bottom of the arrowhead
+                            close()
+                        }
+                        drawPath(
+                            path = arrowHeadPath,
+                            color = Color.Black
+                        )
+
                 }
         )
     }
