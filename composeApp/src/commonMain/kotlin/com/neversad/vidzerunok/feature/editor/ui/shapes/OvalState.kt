@@ -1,10 +1,6 @@
 package com.neversad.vidzerunok.feature.editor.ui.shapes
 
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.geometry.Size
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.DrawScope
-import androidx.compose.ui.graphics.drawscope.Stroke
 import kotlinx.datetime.Clock
 
 private const val stroke_width = 10f
@@ -57,12 +53,7 @@ data class OvalState(
     }
 
     override fun onDrawShape(drawScope: DrawScope) {
-        drawScope.drawOval(
-            color = Color.Red,
-            topLeft = Offset(x, y),
-            size = Size(width, height),
-            style = Stroke(width = stroke_width)
-        )
+
     }
 
 }

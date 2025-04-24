@@ -19,12 +19,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.unit.dp
+import com.neversad.vidzerunok.feature.editor.model.ShapeType
 
 @Composable
 fun ColumnScope.CanvasControls(
-    onRectangleClick: () -> Unit,
-    onCircleClick: () -> Unit,
-    onArrowClick: () -> Unit,
+    onShapeSelected: (ShapeType) -> Unit,
     onClearCanvas: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -41,7 +40,7 @@ fun ColumnScope.CanvasControls(
             modifier = Modifier
                 .size(40.dp)
                 .clickable {
-                    onRectangleClick()
+                    onShapeSelected(ShapeType.RECTANGLE)
                 }
                 .drawBehind {
                     drawRect(
@@ -54,7 +53,7 @@ fun ColumnScope.CanvasControls(
             modifier = Modifier
                 .size(40.dp)
                 .clickable {
-                    onCircleClick()
+                    onShapeSelected(ShapeType.OVAL)
                 }
                 .drawBehind {
                     drawCircle(
@@ -67,7 +66,7 @@ fun ColumnScope.CanvasControls(
             modifier = Modifier
                 .size(40.dp)
                 .clickable {
-                    onArrowClick()
+                    onShapeSelected(ShapeType.ARROW)
                 }
                 .drawBehind {
 

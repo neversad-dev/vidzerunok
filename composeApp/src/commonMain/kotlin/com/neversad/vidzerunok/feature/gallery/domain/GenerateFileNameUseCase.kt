@@ -1,5 +1,7 @@
 package com.neversad.vidzerunok.feature.gallery.domain
 
+import com.neversad.vidzerunok.core.domain.GetTimestampUseCase
+
 
 private const val PREFIX = "vidz"
 

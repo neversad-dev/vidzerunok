@@ -2,24 +2,16 @@ package com.neversad.vidzerunok.feature.editor.ui.shapes
 
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import kotlinx.datetime.Clock
-import kotlin.math.PI
-import kotlin.math.atan2
-import kotlin.math.cos
-import kotlin.math.sin
 
 
 private object MoveStart : DragMode()
 private object MoveEnd : DragMode()
 
-private const val stroke_width = 10f
-private const val arrow_head_size = 40f
 private const val touchable_width = 20f  // Threshold for activation distance
 private const val control_point_radius = 10f
 private const val control_point_stroke = 1f
-private const val outline_width = 4f  // Width of the black outline
 
 data class ArrowState(
     override val id: Long = Clock.System.now().toEpochMilliseconds(),
@@ -110,91 +102,6 @@ data class ArrowState(
 
     override fun draw(drawScope: DrawScope) {
         with(drawScope) {
-            val start = Offset(startX, startY)  // Start point of the arrow
-            val end = Offset(endX, endY)    // End point of the arrow
-
-            // Calculate the angle of the arrow
-            val angle = atan2((end.y - start.y).toDouble(), (end.x - start.x).toDouble())
-            
-            // Calculate the base points of the white triangle
-            val whiteArrowheadLeft = Offset(
-                end.x - arrow_head_size * cos(angle + PI / 6).toFloat(),
-                end.y - arrow_head_size * sin(angle + PI / 6).toFloat()
-            )
-
-            val whiteArrowheadRight = Offset(
-                end.x - arrow_head_size * cos(angle - PI / 6).toFloat(),
-                end.y - arrow_head_size * sin(angle - PI / 6).toFloat()
-            )
-
-            // Calculate the center point of the triangle base (where the line should end)
-            val lineEnd = Offset(
-                (whiteArrowheadLeft.x + whiteArrowheadRight.x) / 2,
-                (whiteArrowheadLeft.y + whiteArrowheadRight.y) / 2
-            )
-
-            // Calculate the black outline points by extending each white triangle point outward
-            val blackArrowTip = Offset(
-                end.x + outline_width * cos(angle).toFloat(),
-                end.y + outline_width * sin(angle).toFloat()
-            )
-
-
-            
-            val blackArrowheadLeft = Offset(
-                whiteArrowheadLeft.x - outline_width * cos(angle + PI / 2).toFloat(),
-                whiteArrowheadLeft.y - outline_width * sin(angle + PI / 2).toFloat()
-            )
-
-            val blackArrowheadRight = Offset(
-                whiteArrowheadRight.x - outline_width * cos(angle - PI / 2).toFloat(),
-                whiteArrowheadRight.y - outline_width * sin(angle - PI / 2).toFloat()
-            )
-
-
-            // Draw the black outline of the line
-            drawLine(
-                color = Color.Black,
-                start = start,
-                end = lineEnd,
-                strokeWidth = stroke_width + outline_width
-            )
-
-            // Draw the white line
-            drawLine(
-                color = Color.White,
-                start = start,
-                end = lineEnd,
-                strokeWidth = stroke_width
-            )
-
-            // Draw the black arrowhead outline
-            val blackPath = Path().apply {
-                moveTo(blackArrowTip.x, blackArrowTip.y)
-                lineTo(blackArrowheadLeft.x, blackArrowheadLeft.y)
-//                lineTo(blackBaseLeft.x, blackBaseLeft.y)
-//                lineTo(blackBaseRight.x, blackBaseRight.y)
-                lineTo(blackArrowheadRight.x, blackArrowheadRight.y)
-                close()
-            }
-
-            drawPath(
-                color = Color.Black,
-                path = blackPath
-            )
-
-            // Draw the white arrowhead
-            val whitePath = Path().apply {
-                moveTo(end.x, end.y)
-                lineTo(whiteArrowheadLeft.x, whiteArrowheadLeft.y)
-                lineTo(whiteArrowheadRight.x, whiteArrowheadRight.y)
-                close()
-            }
-
-            drawPath(
-                color = Color.White,
-                path = whitePath
-            )
 
             if (isActive) {
                 // Arrow start

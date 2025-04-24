@@ -72,32 +72,27 @@ fun EditorScreen(
                 .padding(paddingValues),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-
             CanvasView(
                 modifier = Modifier.fillMaxWidth(),
                 filePath = state.file,
                 shapes = state.shapes,
-                onChangeSelection = {
-                    if (it == null) {
-                        onAction(EditorAction.OnCancelSelection)
-                    } else {
-                        onAction(EditorAction.OnShapeSelected(it))
-                    }
+                onTap = { x, y ->
+                    onAction(EditorAction.OnTap(x, y))
                 },
-                onDrag = { mode, x, y ->
-                    onAction(EditorAction.OnShapeDrag(mode, x, y))
+                onDragStart = { x, y ->
+                    onAction(EditorAction.OnDragStart(x, y))
+                },
+                onDrag = { x, y ->
+                    onAction(EditorAction.OnDrag(x, y))
+                },
+                onDragFinish = {
+                    onAction(EditorAction.OnDragFinish)
                 }
             )
 
             CanvasControls(
-                onRectangleClick = {
-                    onAction(EditorAction.OnRectangleControlClick)
-                },
-                onCircleClick = {
-                    onAction(EditorAction.OnCircleControlClick)
-                },
-                onArrowClick = {
-                    onAction(EditorAction.OnArrowControlClick)
+                onShapeSelected = { shapeType ->
+                    onAction(EditorAction.OnAddShape(shapeType))
                 },
                 onClearCanvas = {
                     onAction(EditorAction.ClearCanvasClick)

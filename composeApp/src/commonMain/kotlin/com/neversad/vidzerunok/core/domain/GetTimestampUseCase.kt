@@ -1,4 +1,4 @@
-package com.neversad.vidzerunok.feature.gallery.domain
+package com.neversad.vidzerunok.core.domain
 
 import kotlinx.datetime.Clock
 import kotlinx.datetime.TimeZone
