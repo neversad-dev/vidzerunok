@@ -1,4 +1,4 @@
-package com.neversad.vidzerunok.feature.editor.ui.shapes
+package com.neversad.vidzerunok.feature.editor.shapes.deprecated
 
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color

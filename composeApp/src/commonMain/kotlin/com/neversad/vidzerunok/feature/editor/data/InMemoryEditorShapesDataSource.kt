@@ -9,7 +9,19 @@ import kotlinx.coroutines.flow.asStateFlow
 class InMemoryEditorShapesDataSource : EditorShapesDataSource {
     private val shapes: MutableStateFlow<List<ShapeData>> = MutableStateFlow(emptyList())
 
-    override fun getShapes(): Flow<List<ShapeData>> {
+    override fun getShapes(): List<ShapeData> {
+        return shapes.value
+    }
+
+    override fun setShapes(shapes: List<ShapeData>) {
+        this.shapes.value = shapes
+    }
+
+    override fun mapShapes(mapper: (ShapeData) -> ShapeData) {
+        shapes.value = shapes.value.map(mapper)
+    }
+
+    override fun observeShapes(): Flow<List<ShapeData>> {
         return shapes.asStateFlow()
     }
 

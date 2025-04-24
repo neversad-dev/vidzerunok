@@ -6,7 +6,8 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import com.neversad.vidzerunok.feature.editor.domain.AddShapeUseCase
 import com.neversad.vidzerunok.feature.editor.domain.ClearShapesUseCase
-import com.neversad.vidzerunok.feature.editor.domain.GetShapesUseCase
+import com.neversad.vidzerunok.feature.editor.domain.DetectTapUseCase
+import com.neversad.vidzerunok.feature.editor.domain.ObserveShapesUseCase
 import com.neversad.vidzerunok.feature.editor.ui.navigation.Editor
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,9 +19,10 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 
 class EditorViewModel(
-    private val getShapesUseCase: GetShapesUseCase,
+    private val getShapesUseCase: ObserveShapesUseCase,
     private val addShapeUseCase: AddShapeUseCase,
     private val clearShapesUseCase: ClearShapesUseCase,
+    private val detectTapUseCase: DetectTapUseCase,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
@@ -49,7 +51,7 @@ class EditorViewModel(
             EditorAction.OnBackClick -> clearShapesUseCase()
             is EditorAction.OnAddShape -> addShapeUseCase(action.shapeType)
             EditorAction.ClearCanvasClick -> clearShapesUseCase()
-
+            is EditorAction.OnTap -> detectTapUseCase(action.x, action.y)
             else -> Unit
         }
 
@@ -67,5 +69,4 @@ class EditorViewModel(
             }
             .launchIn(viewModelScope)
     }
-
 }

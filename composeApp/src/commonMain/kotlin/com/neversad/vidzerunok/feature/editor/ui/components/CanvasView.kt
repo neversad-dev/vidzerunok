@@ -13,15 +13,12 @@ import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import com.neversad.vidzerunok.feature.editor.model.ShapeData
-import com.neversad.vidzerunok.feature.editor.model.ShapeType
-import com.neversad.vidzerunok.feature.editor.ui.shapes.DragMode
-import com.neversad.vidzerunok.feature.editor.ui.shapes.None
-import com.neversad.vidzerunok.feature.editor.ui.shapes.drawer.ArrowShapeDrawer
-import com.neversad.vidzerunok.feature.editor.ui.shapes.drawer.OvalShapeDrawer
-import com.neversad.vidzerunok.feature.editor.ui.shapes.drawer.RectangleShapeDrawer
-import com.neversad.vidzerunok.feature.editor.ui.shapes.drawer.ResizableShapeDrawer
+import com.neversad.vidzerunok.feature.editor.shapes.base.ShapeDrawer
+import com.neversad.vidzerunok.feature.editor.shapes.deprecated.DragMode
+import com.neversad.vidzerunok.feature.editor.shapes.deprecated.None
 import io.github.vinceglb.filekit.PlatformFile
 import io.github.vinceglb.filekit.coil.AsyncImage
+import org.koin.compose.koinInject
 
 
 @Composable
@@ -33,6 +30,7 @@ fun CanvasView(
     onDragStart: (Float, Float) -> Unit,
     onDrag: (Float, Float) -> Unit,
     onDragFinish: () -> Unit,
+    drawer: ShapeDrawer = koinInject()
 ) {
 
     var dragMode by remember { mutableStateOf<DragMode>(None) }
@@ -72,12 +70,7 @@ fun CanvasView(
             .drawWithContent {
                 drawContent()
                 shapes.forEach {
-                    val drawer = when(it.shapeType){
-                        ShapeType.RECTANGLE -> ResizableShapeDrawer(RectangleShapeDrawer)
-                        ShapeType.OVAL -> ResizableShapeDrawer(OvalShapeDrawer)
-                        ShapeType.ARROW -> ArrowShapeDrawer
-                    }
-                    drawer.drawShape(this,  it)
+                    drawer.drawShape(this, it)
                 }
             }
     )

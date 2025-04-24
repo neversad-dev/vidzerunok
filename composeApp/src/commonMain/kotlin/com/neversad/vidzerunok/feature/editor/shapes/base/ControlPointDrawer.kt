@@ -1,16 +1,13 @@
-package com.neversad.vidzerunok.feature.editor.ui.shapes.drawer
+package com.neversad.vidzerunok.feature.editor.shapes.base
 
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.DrawScope
+import com.neversad.vidzerunok.feature.editor.shapes.base.ShapeConstants.CONTROL_POINT_COLOR
+import com.neversad.vidzerunok.feature.editor.shapes.base.ShapeConstants.CONTROL_POINT_INNER_COLOR
+import com.neversad.vidzerunok.feature.editor.shapes.base.ShapeConstants.CONTROL_POINT_RADIUS
+import com.neversad.vidzerunok.feature.editor.shapes.base.ShapeConstants.CONTROL_POINT_STROKE
 
 object ControlPointDrawer {
-
-    private const val CONTROL_POINT_RADIUS = 10f
-    private const val CONTROL_POINT_STROKE = 1f
-    private val CONTROL_POINT_COLOR = Color.Black
-    private val CONTROL_POINT_INNER_COLOR = Color.White
-
 
     fun drawShape(drawScope: DrawScope, x: Float, y: Float) = with(drawScope) {
         drawCircle(

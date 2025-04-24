@@ -5,7 +5,13 @@ import kotlinx.coroutines.flow.Flow
 
 interface EditorShapesDataSource {
 
-    fun getShapes(): Flow<List<ShapeData>>
+    fun getShapes(): List<ShapeData>
+
+    fun setShapes(shapes: List<ShapeData>)
+
+    fun mapShapes(mapper: (ShapeData) -> ShapeData)
+
+    fun observeShapes(): Flow<List<ShapeData>>
 
     fun addShape(shape: ShapeData)
 

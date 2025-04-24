@@ -1,13 +1,14 @@
-package com.neversad.vidzerunok.feature.editor.ui.shapes.drawer
+package com.neversad.vidzerunok.feature.editor.shapes.rectangle
 
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
 import com.neversad.vidzerunok.feature.editor.model.ShapeData
 import com.neversad.vidzerunok.feature.editor.model.ShapeType
-import com.neversad.vidzerunok.feature.editor.ui.shapes.drawer.ShapeDrawer.Companion.STROKE_WIDTH
+import com.neversad.vidzerunok.feature.editor.shapes.base.ShapeConstants.STROKE_COLOR
+import com.neversad.vidzerunok.feature.editor.shapes.base.ShapeConstants.STROKE_WIDTH
+import com.neversad.vidzerunok.feature.editor.shapes.base.ShapeDrawer
 
 object RectangleShapeDrawer : ShapeDrawer {
 
@@ -17,7 +18,7 @@ object RectangleShapeDrawer : ShapeDrawer {
         val topLeft = Offset(shapeState.startX, shapeState.startY)
         val size = Size(shapeState.endX - shapeState.startX, shapeState.endY - shapeState.startY)
         drawScope.drawRect(
-            color = Color.Red,
+            color = STROKE_COLOR,
             topLeft = topLeft,
             size = size,
             style = Stroke(width = STROKE_WIDTH),
