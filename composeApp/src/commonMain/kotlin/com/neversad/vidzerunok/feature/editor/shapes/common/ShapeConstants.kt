@@ -1,4 +1,4 @@
-package com.neversad.vidzerunok.feature.editor.shapes.base
+package com.neversad.vidzerunok.feature.editor.shapes.common
 
 import androidx.compose.ui.graphics.Color
 

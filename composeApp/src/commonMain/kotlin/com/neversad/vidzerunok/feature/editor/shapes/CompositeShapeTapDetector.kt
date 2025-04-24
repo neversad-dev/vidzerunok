@@ -3,7 +3,6 @@ package com.neversad.vidzerunok.feature.editor.shapes
 import com.neversad.vidzerunok.feature.editor.model.ShapeData
 import com.neversad.vidzerunok.feature.editor.model.ShapeType
 import com.neversad.vidzerunok.feature.editor.shapes.arrow.ArrowTapDetector
-import com.neversad.vidzerunok.feature.editor.shapes.base.ShapeTapDetector
 import com.neversad.vidzerunok.feature.editor.shapes.oval.OvalTapDetector
 import com.neversad.vidzerunok.feature.editor.shapes.rectangle.RectangleTapDetector
 

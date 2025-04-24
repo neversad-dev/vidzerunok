@@ -1,4 +1,4 @@
-package com.neversad.vidzerunok.feature.editor.shapes.base
+package com.neversad.vidzerunok.feature.editor.shapes
 
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import com.neversad.vidzerunok.feature.editor.model.ShapeData

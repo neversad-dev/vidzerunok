@@ -1,4 +1,4 @@
-package com.neversad.vidzerunok.feature.editor.shapes.base
+package com.neversad.vidzerunok.feature.editor.shapes
 
 import com.neversad.vidzerunok.feature.editor.model.ShapeData
 

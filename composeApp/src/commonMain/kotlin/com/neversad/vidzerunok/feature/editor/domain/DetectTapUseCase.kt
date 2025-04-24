@@ -1,6 +1,6 @@
 package com.neversad.vidzerunok.feature.editor.domain
 
-import com.neversad.vidzerunok.feature.editor.shapes.base.ShapeTapDetector
+import com.neversad.vidzerunok.feature.editor.shapes.ShapeTapDetector
 
 class DetectTapUseCase(
     private val shapeTapDetector: ShapeTapDetector,

@@ -6,18 +6,16 @@ import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import com.neversad.vidzerunok.feature.editor.model.ShapeData
 import com.neversad.vidzerunok.feature.editor.model.ShapeType
-import com.neversad.vidzerunok.feature.editor.shapes.base.ControlPointDrawer
-import com.neversad.vidzerunok.feature.editor.shapes.base.ShapeConstants.ARROW_HEAD_SIZE
-import com.neversad.vidzerunok.feature.editor.shapes.base.ShapeConstants.ARROW_LINE_WIDTH
-import com.neversad.vidzerunok.feature.editor.shapes.base.ShapeConstants.STROKE_WIDTH
-import com.neversad.vidzerunok.feature.editor.shapes.base.ShapeDrawer
+import com.neversad.vidzerunok.feature.editor.shapes.ShapeDrawer
+import com.neversad.vidzerunok.feature.editor.shapes.common.ShapeConstants.ARROW_HEAD_SIZE
+import com.neversad.vidzerunok.feature.editor.shapes.common.ShapeConstants.ARROW_LINE_WIDTH
+import com.neversad.vidzerunok.feature.editor.shapes.common.ShapeConstants.STROKE_WIDTH
 import kotlin.math.PI
 import kotlin.math.atan2
 import kotlin.math.cos
 import kotlin.math.sin
 
 object ArrowShapeDrawer : ShapeDrawer {
-
 
     override fun drawShape(drawScope: DrawScope, shapeState: ShapeData) {
         if (shapeState.shapeType != ShapeType.ARROW) throw Exception("Invalid shape type for ArrowShapeDrawer")
@@ -104,11 +102,6 @@ object ArrowShapeDrawer : ShapeDrawer {
                 color = Color.White,
                 path = whitePath
             )
-
-            if (shapeState.isActive){
-                ControlPointDrawer.drawShape(drawScope, shapeState.startX, shapeState.startY)
-                ControlPointDrawer.drawShape(drawScope, shapeState.endX, shapeState.endY)
-            }
         }
     }
 }

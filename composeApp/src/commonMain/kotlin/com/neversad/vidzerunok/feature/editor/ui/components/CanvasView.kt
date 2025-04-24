@@ -4,18 +4,12 @@ package com.neversad.vidzerunok.feature.editor.ui.components
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import com.neversad.vidzerunok.feature.editor.model.ShapeData
-import com.neversad.vidzerunok.feature.editor.shapes.base.ShapeDrawer
-import com.neversad.vidzerunok.feature.editor.shapes.deprecated.DragMode
-import com.neversad.vidzerunok.feature.editor.shapes.deprecated.None
+import com.neversad.vidzerunok.feature.editor.shapes.ShapeDrawer
 import io.github.vinceglb.filekit.PlatformFile
 import io.github.vinceglb.filekit.coil.AsyncImage
 import org.koin.compose.koinInject
@@ -33,23 +27,17 @@ fun CanvasView(
     drawer: ShapeDrawer = koinInject()
 ) {
 
-    var dragMode by remember { mutableStateOf<DragMode>(None) }
-    var dragFinished by remember { mutableStateOf(false) }
-
-
-    fun activeShape(): ShapeData? = shapes.lastOrNull { it.isActive }
-
     AsyncImage(
         file = PlatformFile(filePath),
         contentDescription = null,
         contentScale = ContentScale.Fit,
         modifier = modifier
-            .pointerInput(shapes) {
+            .pointerInput(Unit) {
                 detectTapGestures { offset ->
                     onTap(offset.x, offset.y)
                 }
             }
-            .pointerInput(activeShape()?.id, dragFinished) {
+            .pointerInput(Unit) {
                 detectDragGestures(
                     onDragStart = { startPoint ->
                         onDragStart(startPoint.x, startPoint.y)
@@ -58,11 +46,9 @@ fun CanvasView(
                         onDrag(dragAmount.x, dragAmount.y)
                     },
                     onDragEnd = {
-                        dragFinished = !dragFinished
                         onDragFinish()
                     },
                     onDragCancel = {
-                        dragFinished = !dragFinished
                         onDragFinish()
                     }
                 )
