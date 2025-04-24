@@ -31,14 +31,26 @@ class ResizableShapeDrawer(
                 ControlPoint.TOP_LEFT -> {
                     drawControlPoint(drawScope, shapeState.startX, shapeState.startY)
                 }
+                ControlPoint.TOP -> {
+                    drawControlPoint(drawScope, shapeState.startX + (shapeState.endX - shapeState.startX) / 2, shapeState.startY)
+                }
                 ControlPoint.TOP_RIGHT -> {
                     drawControlPoint(drawScope, shapeState.endX, shapeState.startY)
+                }
+                ControlPoint.RIGHT -> {
+                    drawControlPoint(drawScope, shapeState.endX, shapeState.startY + (shapeState.endY - shapeState.startY) / 2)
                 }
                 ControlPoint.BOTTOM_LEFT -> {
                     drawControlPoint(drawScope, shapeState.startX, shapeState.endY)
                 }
+                ControlPoint.BOTTOM -> {
+                    drawControlPoint(drawScope, shapeState.startX + (shapeState.endX - shapeState.startX) / 2, shapeState.endY)
+                }
                 ControlPoint.BOTTOM_RIGHT -> {
                     drawControlPoint(drawScope, shapeState.endX, shapeState.endY)
+                }
+                ControlPoint.LEFT -> {
+                    drawControlPoint(drawScope, shapeState.startX, shapeState.startY + (shapeState.endY - shapeState.startY) / 2)
                 }
             }
         }
