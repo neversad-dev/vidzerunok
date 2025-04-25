@@ -19,8 +19,6 @@ class DetectTapUseCase(
             shapes.remove(tapped)
             shapes.add(tapped.copy(isActive = true))
         }
-
         editorShapesDataSource.setShapes(shapes)
-
     }
 }

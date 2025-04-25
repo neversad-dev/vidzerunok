@@ -7,9 +7,9 @@ import androidx.compose.ui.graphics.drawscope.DrawScope
 import com.neversad.vidzerunok.feature.editor.model.ShapeData
 import com.neversad.vidzerunok.feature.editor.model.ShapeType
 import com.neversad.vidzerunok.feature.editor.shapes.ShapeDrawer
-import com.neversad.vidzerunok.feature.editor.shapes.common.ShapeConstants.ARROW_HEAD_SIZE
-import com.neversad.vidzerunok.feature.editor.shapes.common.ShapeConstants.ARROW_LINE_WIDTH
-import com.neversad.vidzerunok.feature.editor.shapes.common.ShapeConstants.STROKE_WIDTH
+import com.neversad.vidzerunok.feature.editor.shapes.ShapeConstants.ARROW_HEAD_SIZE
+import com.neversad.vidzerunok.feature.editor.shapes.ShapeConstants.ARROW_LINE_WIDTH
+import com.neversad.vidzerunok.feature.editor.shapes.ShapeConstants.STROKE_WIDTH
 import kotlin.math.PI
 import kotlin.math.atan2
 import kotlin.math.cos

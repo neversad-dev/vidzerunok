@@ -7,8 +7,10 @@ import androidx.navigation.toRoute
 import com.neversad.vidzerunok.feature.editor.domain.AddShapeUseCase
 import com.neversad.vidzerunok.feature.editor.domain.ClearShapesUseCase
 import com.neversad.vidzerunok.feature.editor.domain.DetectTapUseCase
+import com.neversad.vidzerunok.feature.editor.domain.DragFinishUseCase
+import com.neversad.vidzerunok.feature.editor.domain.DragStartUseCase
+import com.neversad.vidzerunok.feature.editor.domain.DragUseCase
 import com.neversad.vidzerunok.feature.editor.domain.ObserveShapesUseCase
-import com.neversad.vidzerunok.feature.editor.domain.ShapeDragUseCase
 import com.neversad.vidzerunok.feature.editor.ui.navigation.Editor
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -24,7 +26,9 @@ class EditorViewModel(
     private val addShapeUseCase: AddShapeUseCase,
     private val clearShapesUseCase: ClearShapesUseCase,
     private val detectTapUseCase: DetectTapUseCase,
-    private val shapeDragUseCase: ShapeDragUseCase,
+    private val dragStartUseCase: DragStartUseCase,
+    private val dragUseCase: DragUseCase,
+    private val dragFinishUseCase: DragFinishUseCase,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
@@ -54,9 +58,9 @@ class EditorViewModel(
             is EditorAction.OnAddShape -> addShapeUseCase(action.shapeType)
             EditorAction.ClearCanvasClick -> clearShapesUseCase()
             is EditorAction.OnTap -> detectTapUseCase(action.x, action.y)
-            is EditorAction.OnDragStart -> shapeDragUseCase.onDragStart(action.x, action.y)
-            is EditorAction.OnDrag -> shapeDragUseCase.onDrag(action.x, action.y)
-            EditorAction.OnDragFinish -> shapeDragUseCase.onDragFinish()
+            is EditorAction.OnDragStart -> dragStartUseCase(action.x, action.y)
+            is EditorAction.OnDrag -> dragUseCase(action.x, action.y)
+            EditorAction.OnDragFinish -> dragFinishUseCase()
             else -> Unit
         }
 

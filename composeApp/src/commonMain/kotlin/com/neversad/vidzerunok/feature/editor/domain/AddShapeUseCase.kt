@@ -1,5 +1,6 @@
 package com.neversad.vidzerunok.feature.editor.domain
 
+import com.neversad.vidzerunok.feature.editor.model.InteractionMode
 import com.neversad.vidzerunok.feature.editor.model.ShapeData
 import com.neversad.vidzerunok.feature.editor.model.ShapeType
 
@@ -21,6 +22,7 @@ class AddShapeUseCase(
             id = generateUidUseCase(),
             shapeType = shapeType,
             isActive = true,
+            activeInteractionMode = InteractionMode.NONE,
             startX = 50f + randomOffset(100),
             startY = 50f + randomOffset(100),
             endX = 550f + randomOffset(100),

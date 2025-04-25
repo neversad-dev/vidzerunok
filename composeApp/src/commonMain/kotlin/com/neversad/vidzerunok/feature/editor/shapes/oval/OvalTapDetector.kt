@@ -1,7 +1,7 @@
 package com.neversad.vidzerunok.feature.editor.shapes.oval
 
 import com.neversad.vidzerunok.feature.editor.model.ShapeData
-import com.neversad.vidzerunok.feature.editor.shapes.common.ShapeConstants.TOUCHABLE_WIDTH
+import com.neversad.vidzerunok.feature.editor.shapes.ShapeConstants.TOUCHABLE_WIDTH
 import com.neversad.vidzerunok.feature.editor.shapes.ShapeTapDetector
 
 object OvalTapDetector : ShapeTapDetector {

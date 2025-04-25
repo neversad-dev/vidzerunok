@@ -32,4 +32,8 @@ class InMemoryEditorShapesDataSource : EditorShapesDataSource {
     override fun clearShapes() {
         shapes.value = emptyList()
     }
+
+    override fun getActiveShape(): ShapeData? {
+        return shapes.value.lastOrNull { it.isActive }
+    }
 }

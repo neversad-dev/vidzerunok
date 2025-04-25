@@ -1,43 +1,38 @@
 package com.neversad.vidzerunok.feature.editor.model
 
-import com.neversad.vidzerunok.feature.editor.model.ControlPoint.BOTTOM
-import com.neversad.vidzerunok.feature.editor.model.ControlPoint.BOTTOM_LEFT
-import com.neversad.vidzerunok.feature.editor.model.ControlPoint.BOTTOM_RIGHT
-import com.neversad.vidzerunok.feature.editor.model.ControlPoint.RIGHT
-import com.neversad.vidzerunok.feature.editor.model.ControlPoint.TOP
-import com.neversad.vidzerunok.feature.editor.model.ControlPoint.TOP_LEFT
-import com.neversad.vidzerunok.feature.editor.model.ControlPoint.*
+import com.neversad.vidzerunok.feature.editor.model.InteractionMode.MOVE
+import com.neversad.vidzerunok.feature.editor.model.InteractionMode.RESIZE_BL
+import com.neversad.vidzerunok.feature.editor.model.InteractionMode.RESIZE_BOTTOM
+import com.neversad.vidzerunok.feature.editor.model.InteractionMode.RESIZE_BR
+import com.neversad.vidzerunok.feature.editor.model.InteractionMode.RESIZE_LEFT
+import com.neversad.vidzerunok.feature.editor.model.InteractionMode.RESIZE_RIGHT
+import com.neversad.vidzerunok.feature.editor.model.InteractionMode.RESIZE_TL
+import com.neversad.vidzerunok.feature.editor.model.InteractionMode.RESIZE_TOP
+import com.neversad.vidzerunok.feature.editor.model.InteractionMode.RESIZE_TR
 
-enum class ControlPoint {
-    TOP_LEFT,
-    TOP,
-    TOP_RIGHT,
-    RIGHT,
-    BOTTOM_RIGHT,
-    BOTTOM,
-    BOTTOM_LEFT,
-    LEFT,
-}
 
-enum class ShapeType(vararg val controlPoints: ControlPoint) {
+enum class ShapeType(vararg val interactionModes: InteractionMode) {
     RECTANGLE(
-        TOP_LEFT,
-        TOP,
-        TOP_RIGHT,
-        RIGHT,
-        BOTTOM_RIGHT,
-        BOTTOM,
-        BOTTOM_LEFT,
-        LEFT
+        RESIZE_TL,
+        RESIZE_TOP,
+        RESIZE_TR,
+        RESIZE_RIGHT,
+        RESIZE_BR,
+        RESIZE_BOTTOM,
+        RESIZE_BL,
+        RESIZE_LEFT,
+        MOVE,
     ),
     OVAL(
-        TOP_LEFT,
-        TOP_RIGHT,
-        BOTTOM_LEFT,
-        BOTTOM_RIGHT
+        RESIZE_TL,
+        RESIZE_TR,
+        RESIZE_BL,
+        RESIZE_BR,
+        MOVE,
     ),
     ARROW(
-        TOP_LEFT,
-        BOTTOM_RIGHT,
+        RESIZE_TL,
+        RESIZE_BR,
+        MOVE,
     )
 }

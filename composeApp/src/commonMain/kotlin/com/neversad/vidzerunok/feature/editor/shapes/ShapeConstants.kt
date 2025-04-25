@@ -1,10 +1,11 @@
-package com.neversad.vidzerunok.feature.editor.shapes.common
+package com.neversad.vidzerunok.feature.editor.shapes
 
 import androidx.compose.ui.graphics.Color
 
 object ShapeConstants {
     const val CONTROL_POINT_RADIUS = 10f
     const val CONTROL_POINT_STROKE = 1f
+    const val CONTROL_POINT_ACTIVE_SCALE = 1.5f
     val CONTROL_POINT_COLOR = Color.Black
     val CONTROL_POINT_INNER_COLOR = Color.White
 

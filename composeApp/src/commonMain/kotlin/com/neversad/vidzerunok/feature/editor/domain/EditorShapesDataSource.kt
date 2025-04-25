@@ -17,5 +17,7 @@ interface EditorShapesDataSource {
 
     fun clearShapes()
 
+    fun getActiveShape(): ShapeData?
+
 
 }

@@ -4,16 +4,16 @@ import androidx.compose.ui.graphics.drawscope.DrawScope
 import com.neversad.vidzerunok.feature.editor.model.ShapeData
 import com.neversad.vidzerunok.feature.editor.model.ShapeType
 import com.neversad.vidzerunok.feature.editor.shapes.arrow.ArrowShapeDrawer
-import com.neversad.vidzerunok.feature.editor.shapes.common.resizable.ResizableShapeDrawer
+import com.neversad.vidzerunok.feature.editor.shapes.interactive.InteractiveShapeDrawer
 import com.neversad.vidzerunok.feature.editor.shapes.oval.OvalShapeDrawer
 import com.neversad.vidzerunok.feature.editor.shapes.rectangle.RectangleShapeDrawer
 
 object CompositeShapeDrawer : ShapeDrawer {
 
     private val allDrawers = mapOf(
-        ShapeType.RECTANGLE to ResizableShapeDrawer(RectangleShapeDrawer),
-        ShapeType.OVAL to ResizableShapeDrawer(OvalShapeDrawer),
-        ShapeType.ARROW to ResizableShapeDrawer(ArrowShapeDrawer)
+        ShapeType.RECTANGLE to InteractiveShapeDrawer(RectangleShapeDrawer),
+        ShapeType.OVAL to InteractiveShapeDrawer(OvalShapeDrawer),
+        ShapeType.ARROW to InteractiveShapeDrawer(ArrowShapeDrawer)
     )
 
 
